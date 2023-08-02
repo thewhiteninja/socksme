@@ -23,7 +23,7 @@ jobs:
     - name: Install Windows SDK 
       uses: ChristopheLav/windows-sdk-install@v1.0.1
       with:
-        version-sdk: 16299
+        version-sdk: 19041
         features: 'OptionId.UWPCPP,OptionId.DesktopCPPx86,OptionId.DesktopCPPx64'
 
     - name: Add MSBuild to PATH
