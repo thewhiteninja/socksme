@@ -32,7 +32,7 @@ jobs:
         features: 'OptionId.UWPCPP,OptionId.DesktopCPPx86,OptionId.DesktopCPPx64'
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.3.1
 
     - name: Build x64
       working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -41,7 +41,7 @@ jobs:
     - name: Copy x64 Artifacts
       run: |
         mkdir final
-        copy D:\a\socksme\socksme\Builds\${{matrix.Configuration}}\ntfstool*.exe final
+        copy D:\a\socksme\socksme\Builds\${{matrix.Configuration}}\socksme*.exe final
     - uses: actions/upload-artifact@v1
       with:
         name: build-${{matrix.Configuration}}-${{matrix.Arch}}
