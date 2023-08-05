@@ -41,7 +41,7 @@ jobs:
     - name: Copy x64 Artifacts
       run: |
         mkdir final
-        copy D:\a\socksme\socksme\Builds\${{matrix.Configuration}}\${{matrix.Arch}}\ntfstool*.exe final
+        copy D:\a\socksme\socksme\Builds\${{matrix.Configuration}}\ntfstool*.exe final
     - uses: actions/upload-artifact@v1
       with:
         name: build-${{matrix.Configuration}}-${{matrix.Arch}}
