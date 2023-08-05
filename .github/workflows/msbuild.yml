@@ -1,4 +1,6 @@
-name: MSBuild
+env:
+  NUKE_TELEMETRY_OPTOUT: 1
+name: continuous
 
 on:
   push:
@@ -6,16 +8,19 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  SOLUTION_FILE_PATH: .
-  BUILD_CONFIGURATION: Release
-
 permissions:
   contents: read
 
 jobs:
-  build:
+  continuous:
+    name: Run
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        BaseImage: [windows-latest]
+        Configuration: [Release]
+        Arch: [x86, x64]
 
     steps:
     - uses: actions/checkout@v3
@@ -29,6 +34,15 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Build
+    - name: Build x64
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{matrix.Configuration}} /p:Platform=${{matrix.Arch}} .
+
+    - name: Copy x64 Artifacts
+      run: |
+        mkdir final
+        copy D:\a\socksme\socksme\Builds\${{matrix.Configuration}}\${{matrix.Arch}}\ntfstool*.exe final
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build-${{matrix.Configuration}}-${{matrix.Arch}}
+        path: final
